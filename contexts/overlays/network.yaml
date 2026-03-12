@@ -1,0 +1,53 @@
+# Network Context Overlay — Constructs Network
+# Project-specific values for gecko's observation targets.
+
+network:
+  name: "Constructs Network"
+  org: "0xHoneyJar"
+  api_base: "https://api.constructs.network/v1"
+  domain: "constructs.network"
+  construct_prefix: "construct-"
+
+  # Known constructs (auto-updated by /observe)
+  # This is a cache — the namespace IS the registry.
+  known_slugs:
+    - observer
+    - artisan
+    - k-hole
+    - crucible
+    - protocol
+    - herald
+    - beacon
+    - hardening
+    - dynamic-auth
+    - the-easel
+    - gtm-collective
+    - webgl-particles
+    - mibera-codex
+    - social-oracle
+    - webreel
+    - growthpages
+
+  canonical_categories:
+    - development
+    - security
+    - design
+    - documentation
+    - operations
+    - infrastructure
+    - research
+    - straylight
+
+  # Consumer repos where constructs are installed
+  consumer_repos:
+    - "0xHoneyJar/loa-constructs"
+    - "0xHoneyJar/midi-interface"
+    - "0xHoneyJar/mcv-interface"
+    - "0xHoneyJar/rektdrop-interface"
+
+  # Health check endpoints
+  health_endpoints:
+    - url: "https://api.constructs.network/v1/health"
+      name: "API Health"
+    - url: "https://api.constructs.network/v1/health/ready"
+      name: "API Readiness"

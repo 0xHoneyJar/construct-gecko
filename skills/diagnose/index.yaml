@@ -1,0 +1,31 @@
+slug: diagnose
+name: "Construct Diagnosis"
+version: 0.1.0
+
+description: |
+  Use this skill to deeply investigate a single construct — identity-reality drift,
+  maintenance patterns, composition health. Gecko's /dig equivalent for network issues.
+
+triggers:
+  - "/diagnose"
+  - "investigate construct"
+  - "why is this construct"
+  - "construct health deep dive"
+
+entry: SKILL.md
+
+capabilities:
+  model_tier: opus
+  danger_level: safe
+  effort_hint: large
+  downgrade_allowed: false
+  execution_hint: sequential
+  requires:
+    tool_calling: true
+    native_runtime: false
+    thinking_traces: required
+    vision: false
+
+outputs:
+  - path: "grimoires/gecko/diagnoses/"
+    description: "Structured diagnosis reports per construct"

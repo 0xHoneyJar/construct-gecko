@@ -1,0 +1,32 @@
+slug: observe
+name: "Network Observation"
+version: 0.1.0
+
+description: |
+  Use this skill when you need a single-pass health check of the constructs network.
+  Checks API liveness, namespace freshness, category coverage, identity-reality drift,
+  and computes the Network Health Score.
+
+triggers:
+  - "/observe"
+  - "check network health"
+  - "how is the network doing"
+  - "constructs health check"
+
+entry: SKILL.md
+
+capabilities:
+  model_tier: sonnet
+  danger_level: safe
+  effort_hint: medium
+  downgrade_allowed: true
+  execution_hint: sequential
+  requires:
+    tool_calling: true
+    native_runtime: false
+    thinking_traces: false
+    vision: false
+
+outputs:
+  - path: "grimoires/gecko/observations.jsonl"
+    description: "Append-only observation log"

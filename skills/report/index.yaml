@@ -1,0 +1,31 @@
+slug: report
+name: "Network Health Report"
+version: 0.1.0
+
+description: |
+  Use this skill to synthesize observations into a readable network health report.
+  Aggregates JSONL observations, computes trends, cross-references diagnoses.
+
+triggers:
+  - "/report"
+  - "network health report"
+  - "summarize network"
+  - "gecko report"
+
+entry: SKILL.md
+
+capabilities:
+  model_tier: sonnet
+  danger_level: safe
+  effort_hint: medium
+  downgrade_allowed: true
+  execution_hint: sequential
+  requires:
+    tool_calling: true
+    native_runtime: false
+    thinking_traces: false
+    vision: false
+
+outputs:
+  - path: "grimoires/gecko/reports/"
+    description: "Network health reports"

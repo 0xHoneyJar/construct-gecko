@@ -1,0 +1,10 @@
+# Loa Construct — Stealth Defaults
+.ck/
+.construct/
+.run/
+node_modules/
+dist/
+*.log
+.env
+.env.*
+.DS_Store

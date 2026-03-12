@@ -1,0 +1,89 @@
+schema_version: 3
+name: Gecko
+slug: gecko
+version: 0.1.0
+description: Ecosystem intelligence — autonomous network health observation, identity-reality drift detection, and construct lifecycle monitoring. The quietest stall in the bazaar.
+author: 0xHoneyJar
+license: MIT
+type: skill-pack
+
+domain:
+  - observability
+  - ecosystem-intelligence
+
+skills:
+  - slug: patrol
+    path: skills/patrol
+  - slug: observe
+    path: skills/observe
+  - slug: diagnose
+    path: skills/diagnose
+  - slug: report
+    path: skills/report
+
+commands:
+  - name: patrol
+    path: commands/patrol.md
+  - name: observe
+    path: commands/observe.md
+  - name: diagnose
+    path: commands/diagnose.md
+  - name: report
+    path: commands/report.md
+
+repository:
+  url: https://github.com/0xHoneyJar/construct-gecko.git
+  homepage: https://constructs.network/constructs/gecko
+
+events:
+  emits:
+    - type: gecko.health_observed
+      description: Emitted after a single-pass observation completes
+      data_schema:
+        health_score: number
+        constructs_checked: number
+        anomalies: number
+        timestamp: string
+    - type: gecko.drift_detected
+      description: Emitted when identity-reality drift exceeds threshold
+      data_schema:
+        construct_slug: string
+        drift_type: string
+        severity: string
+        details: string
+    - type: gecko.patrol_complete
+      description: Emitted when a full patrol cycle finishes
+      data_schema:
+        iterations: number
+        health_delta: number
+        findings_path: string
+    - type: gecko.diagnosis_complete
+      description: Emitted when a deep diagnosis of a construct finishes
+      data_schema:
+        construct_slug: string
+        finding_count: number
+        recommendations: number
+  consumes:
+    - type: forge.k-hole.emergence_complete
+      description: Picks up research emergence for ecosystem pattern matching
+
+identity:
+  persona: identity/persona.yaml
+  expertise: identity/expertise.yaml
+
+paths:
+  reads:
+    - "construct.yaml"
+    - "identity/persona.yaml"
+    - "skills/*/SKILL.md"
+  writes:
+    - "grimoires/gecko/"
+
+pack_dependencies: []
+
+hooks:
+  post_install: scripts/install.sh
+
+quick_start:
+  command: /observe
+  description: Run a single-pass health check on the constructs network
