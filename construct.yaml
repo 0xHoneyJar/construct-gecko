@@ -6,6 +6,7 @@ description: Ecosystem intelligence — autonomous network health observation, i
 author: 0xHoneyJar
 license: MIT
 type: skill-pack
+visibility: public
 
 domain:
   - observability
