@@ -1,0 +1,37 @@
+name: Gecko Patrol
+
+on:
+  schedule:
+    # Daily at 06:30 UTC (after constructs sync at 06:00)
+    - cron: '30 6 * * *'
+  workflow_dispatch: # Manual trigger
+
+permissions:
+  contents: read
+
+jobs:
+  observe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --no-save 2>/dev/null || npm install tsx 2>/dev/null || true
+
+      - name: Run health check
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p grimoires/gecko
+          npx tsx scripts/health-score.ts --json --append grimoires/gecko/observations.jsonl
+
+      - name: Upload observation
+        uses: actions/upload-artifact@v4
+        with:
+          name: gecko-observation-${{ github.run_number }}
+          path: grimoires/gecko/observations.jsonl
+          retention-days: 90
