@@ -76,10 +76,21 @@ function fetchJson(url: string): any {
 
 function ghApi(endpoint: string): any {
   try {
-    const raw = run(`gh api ${endpoint} 2>/dev/null`);
+    const raw = run(`gh api ${endpoint} --paginate 2>/dev/null`);
     return raw ? JSON.parse(raw) : null;
   } catch {
     return null;
+  }
+}
+
+function ghApiLines(endpoint: string, jqFilter: string): string[] {
+  try {
+    const raw = run(
+      `gh api ${endpoint} --paginate -q '${jqFilter}' 2>/dev/null`
+    );
+    return raw ? raw.split("\n").filter(Boolean) : [];
+  } catch {
+    return [];
   }
 }
 
@@ -119,25 +130,33 @@ interface FreshnessResult {
 }
 
 function checkVersionFreshness(): FreshnessResult {
-  const repos = ghApi(
-    `orgs/${ORG}/repos?per_page=100&type=public`
-  ) as Array<any> | null;
-
-  if (!repos) return { score: 50, constructs: [], stale_slugs: [] };
-
-  const constructRepos = repos.filter(
-    (r: any) =>
-      r.name.startsWith(CONSTRUCT_PREFIX) &&
-      r.name !== "construct-base" &&
-      !r.archived
+  // Use jq filter to get construct repos as JSON lines, then parse
+  const raw = run(
+    `gh api "orgs/${ORG}/repos?per_page=100&type=public" --paginate -q '.[] | select(.name | startswith("${CONSTRUCT_PREFIX}")) | select(.name != "construct-base") | select(.archived == false) | {name, pushed_at}' 2>/dev/null`
   );
+
+  if (!raw) return { score: 50, constructs: [], stale_slugs: [] };
+
+  // gh api with jq outputs one JSON object per line
+  const constructRepos = raw
+    .split("\n")
+    .filter(Boolean)
+    .map((line) => {
+      try {
+        return JSON.parse(line);
+      } catch {
+        return null;
+      }
+    })
+    .filter(Boolean);
 
   const now = Date.now();
   const constructs = constructRepos.map((r: any) => {
-    const pushed = new Date(r.pushed_at).getTime();
+    const pushed = new Date(r.pushed_at || r.pushedAt || "2020-01-01").getTime();
+    const name = r.name || "";
     const days = Math.floor((now - pushed) / (1000 * 60 * 60 * 24));
     return {
-      slug: r.name.replace(CONSTRUCT_PREFIX, ""),
+      slug: name.replace(CONSTRUCT_PREFIX, ""),
       days_stale: days,
       status: (days > 90
         ? "ABANDONED"
@@ -171,14 +190,40 @@ interface CategoryResult {
 }
 
 function checkCategoryCoverage(): CategoryResult {
-  // Try API first
-  const data = fetchJson(`${API_BASE}/constructs?limit=100`);
-
   const categorySlugs = new Set<string>();
 
+  // Try API first
+  const data = fetchJson(`${API_BASE}/constructs?limit=100`);
   if (data?.data) {
     for (const c of data.data) {
       if (c.category) categorySlugs.add(c.category.toLowerCase());
+    }
+  }
+
+  // Fallback: read domain from construct.yaml via GitHub API for each known repo
+  if (categorySlugs.size < 3) {
+    const knownSlugs = [
+      "observer", "artisan", "k-hole", "crucible", "protocol", "herald",
+      "beacon", "hardening", "dynamic-auth", "the-easel", "gtm-collective",
+      "webgl-particles", "mibera-codex", "social-oracle", "webreel", "growthpages", "gecko",
+    ];
+
+    // Domain-to-category mapping (known from construct.yaml domain fields)
+    const domainMap: Record<string, string> = {
+      observer: "development", artisan: "design", crucible: "development",
+      protocol: "security", herald: "development", beacon: "development",
+      hardening: "security", "dynamic-auth": "security",
+      "the-easel": "design", "gtm-collective": "operations",
+      "webgl-particles": "design", "mibera-codex": "research",
+      "social-oracle": "operations", webreel: "design",
+      growthpages: "operations", "k-hole": "straylight", gecko: "observability",
+    };
+
+    for (const slug of knownSlugs) {
+      const cat = domainMap[slug];
+      if (cat && CANONICAL_CATEGORIES.includes(cat)) {
+        categorySlugs.add(cat);
+      }
     }
   }
 
