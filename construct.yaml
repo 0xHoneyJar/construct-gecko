@@ -81,6 +81,12 @@ paths:
   writes:
     - "grimoires/gecko/"
 
+composition_paths:
+  reads:
+    - "grimoires/"
+compose_with:
+  - observer
+  - k-hole
 pack_dependencies: []
 
 hooks:
