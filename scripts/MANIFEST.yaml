@@ -1,0 +1,64 @@
+# scripts/MANIFEST.yaml — Gecko script inventory
+# Machine-readable manifest for construct tooling and CI validation.
+
+scripts:
+  - name: health-score
+    file: health-score.ts
+    runtime: "npx tsx"
+    description: >
+      Composite ecosystem health score from 6 sub-signals (API liveness,
+      version freshness, category coverage, identity drift, composition
+      density, verification flow). Human-readable by default, JSON with flag.
+    args:
+      - name: "--quick"
+        type: boolean
+        description: "Skip slow GitHub API checks (version freshness)"
+      - name: "--json"
+        type: boolean
+        description: "Output JSON instead of human-readable summary"
+      - name: "--append"
+        type: path
+        description: "Append JSONL observation to the specified file"
+    output: "Human-readable summary to stdout; JSON when --json is set"
+    side_effects:
+      - "Appends JSONL to file at --append path (when flag is used)"
+    credentials: []
+    danger: safe
+
+  - name: patrol-loop
+    file: patrol-loop.sh
+    runtime: bash
+    description: >
+      Autonomous observation cycle orchestrator. Runs health-score.ts in a
+      loop with ratchet logic and kaironic termination (stable for 3
+      consecutive cycles). Writes patrol state and observations to grimoire.
+    args:
+      - name: "--cycles"
+        type: int
+        default: 3
+        description: "Number of patrol cycles to run"
+      - name: "--once"
+        type: boolean
+        description: "Single cycle (equivalent to --cycles 1)"
+      - name: "--cron"
+        type: boolean
+        description: "Cron-friendly mode: single cycle, no TTY assumptions"
+    output: "Structured text to stdout with per-cycle health metrics"
+    side_effects:
+      - "Writes observations to grimoires/gecko/observations.jsonl"
+      - "Writes patrol state to grimoires/gecko/patrol-state.json"
+    credentials: []
+    danger: safe
+
+  - name: install
+    file: install.sh
+    runtime: bash
+    description: >
+      Post-install hook. Creates grimoires/gecko/ output directories in
+      the consumer repo.
+    args: []
+    output: "Install confirmation to stdout"
+    side_effects:
+      - "Creates grimoires/gecko/diagnoses/ and grimoires/gecko/reports/ directories"
+    credentials: []
+    danger: safe
