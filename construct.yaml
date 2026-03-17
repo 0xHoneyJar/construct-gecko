@@ -89,6 +89,17 @@ compose_with:
   - k-hole
 pack_dependencies: []
 
+capabilities:
+  model_tier: opus
+  danger_level: moderate
+  effort_hint: large
+  downgrade_allowed: false
+  execution_hint: sequential
+  requires:
+    tool_calling: true
+    thinking_traces: true
+    vision: false
+
 hooks:
   post_install: scripts/install.sh
 
