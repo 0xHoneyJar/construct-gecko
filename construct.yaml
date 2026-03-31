@@ -2,7 +2,7 @@ schema_version: 3
 name: Gecko
 slug: gecko
 version: 0.1.0
-description: "Network health monitoring for the construct ecosystem. Autonomous observation loops, identity-reality drift detection (does the persona match the actual output?), and construct lifecycle tracking. Four skills: patrol, observe, diagnose, report."
+description: "Health monitoring for the construct ecosystem. Runs automated checks, detects when constructs drift from their documentation, and tracks lifecycle status. Four skills: patrol (automated loops), observe (single check), diagnose (deep investigation), report (findings summary)."
 short_description: "Construct network health monitoring"
 author: 0xHoneyJar
 license: MIT
