@@ -2,8 +2,8 @@ schema_version: 3
 name: Gecko
 slug: gecko
 version: 0.1.0
-description: Ecosystem intelligence — autonomous network health observation, identity-reality drift detection, and construct lifecycle monitoring. The quietest stall in the bazaar.
-short_description: "Ecosystem intelligence"
+description: "Network health monitoring for the construct ecosystem. Autonomous observation loops, identity-reality drift detection (does the persona match the actual output?), and construct lifecycle tracking. Four skills: patrol, observe, diagnose, report."
+short_description: "Construct network health monitoring"
 author: 0xHoneyJar
 license: MIT
 type: skill-pack
