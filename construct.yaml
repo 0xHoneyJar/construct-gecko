@@ -37,6 +37,10 @@ repository:
   url: https://github.com/0xHoneyJar/construct-gecko.git
   homepage: https://constructs.network/constructs/gecko
 
+streams:
+  reads: [Intent, Operator-Model]
+  writes: [Signal, Verdict, Artifact]
+
 events:
   emits:
     - type: gecko.health_observed

@@ -30,8 +30,11 @@ Score ratchets: only surfaces findings when health degrades below previous basel
 
 ## Trust Boundary
 
-Gecko READS everything. Gecko WRITES only to `grimoires/gecko/`.
-Gecko never modifies construct source, manifests, or identity files.
+Gecko reads from registry manifests, construct repos, and ecosystem signals.
+Gecko writes to `grimoires/gecko/` only — never modifies construct source, manifests, or identity files.
+
+- reads: registry manifests, construct repos, ecosystem signals (read-only)
+- writes: `grimoires/gecko/` (observations, verdicts, reports)
 
 ## Requirements
 
