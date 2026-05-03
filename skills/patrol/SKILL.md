@@ -1,3 +1,10 @@
+---
+name: patrol
+description: "Autonomous observation loop. Time-boxed cycles with ratcheting health score, commits findings to grimoires."
+allowed-tools: [Bash, Read, Grep, Glob, Write, Edit]
+user-invocable: true
+---
+
 # Patrol — Autonomous Observation Loop
 
 ## Purpose

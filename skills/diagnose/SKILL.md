@@ -1,3 +1,10 @@
+---
+name: diagnose
+description: "Deep investigation of a single construct. Identity-reality drift, maintenance pattern, composition analysis."
+allowed-tools: [Bash, Read, Grep, Glob, Write, Edit]
+user-invocable: true
+---
+
 # Diagnose — Deep Construct Investigation
 
 ## Purpose

@@ -1,3 +1,10 @@
+---
+name: report
+description: "Synthesize observations into a readable network health report. Aggregates patterns and trends from observation cycles."
+allowed-tools: [Bash, Read, Grep, Glob, Write, Edit]
+user-invocable: true
+---
+
 # Report — Network Health Synthesis
 
 ## Purpose

@@ -1,3 +1,10 @@
+---
+name: observe
+description: "Single-pass network health observation. Checks API liveness, namespace freshness, drift, computes Network Health Score."
+allowed-tools: [Bash, Read, Grep, Glob, Write, Edit]
+user-invocable: true
+---
+
 # Observe — Single-Pass Network Health Check
 
 ## Purpose
