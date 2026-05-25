@@ -1,0 +1,53 @@
+slug: sweep-bonfire
+name: "Walk the Bonfire"
+version: 0.1.0
+
+description: |
+  Walk the operator's bonfire — local working copies of authored constructs.
+  Classify each by lifecycle glyph (seed/hot/warm/crystallized/cooling/ghost)
+  and emit to the wall. Sibling to patrol (which watches the network); this
+  watches what's about to enter it.
+
+triggers:
+  - "/sweep-bonfire"
+  - "sweep my constructs"
+  - "what's cooling in bonfire"
+  - "check my local constructs"
+
+entry: SKILL.md
+
+capabilities:
+  model_tier: sonnet
+  danger_level: safe
+  effort_hint: low
+  downgrade_allowed: true
+  execution_hint: sequential
+  requires:
+    tool_calling: true
+    native_runtime: false
+    thinking_traces: false
+    vision: false
+
+outputs:
+  - type: wall_entry
+    path: <wall> (default ~/bonfire/WALL.md)
+    format: markdown sweep block
+  - type: classification
+    format: table (default) | json (--json) | dry-run table (--dry-run)
+
+composes_with:
+  - patrol             # sibling — network-API altitude
+  - auditing-cluster-cells   # construct-freeside — cluster-of-installables altitude
+  - coordinating-cross-repo  # construct-freeside — execution surface
+
+trust_boundary:
+  reads:
+    - "<root>/*/.git"
+    - "<root>/*/construct.yaml"
+    - "<root>/*/CHARTER.md"
+  writes:
+    - "<wall>"
+  never:
+    - git push, git commit
+    - mutate construct sources
+    - open PRs, create branches, fetch from remote

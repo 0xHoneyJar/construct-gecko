@@ -2,7 +2,7 @@ schema_version: 3
 name: Gecko
 slug: gecko
 version: 0.1.0
-description: "Health monitoring for the construct ecosystem. Runs automated checks, detects when constructs drift from their documentation, and tracks lifecycle status. Four skills: patrol (automated loops), observe (single check), diagnose (deep investigation), report (findings summary)."
+description: "Health monitoring for the construct ecosystem. Runs automated checks, detects when constructs drift from their documentation, and tracks lifecycle status. Five skills: patrol (automated network loops), observe (single network check), diagnose (deep investigation), report (findings summary), sweep-bonfire (walks the operator's local working copies and emits to the wall — sibling altitude to patrol)."
 short_description: "Construct network health monitoring"
 author: 0xHoneyJar
 license: MIT
@@ -22,6 +22,8 @@ skills:
     path: skills/diagnose
   - slug: report
     path: skills/report
+  - slug: sweep-bonfire
+    path: skills/sweep-bonfire
 
 commands:
   - name: patrol
@@ -32,6 +34,8 @@ commands:
     path: commands/diagnose.md
   - name: report
     path: commands/report.md
+  - name: sweep-bonfire
+    path: commands/sweep-bonfire.md
 
 repository:
   url: https://github.com/0xHoneyJar/construct-gecko.git
