@@ -22,6 +22,8 @@ skills:
     path: skills/diagnose
   - slug: report
     path: skills/report
+  - slug: sense-estate
+    path: skills/sense-estate
 
 commands:
   - name: patrol
@@ -32,6 +34,8 @@ commands:
     path: commands/diagnose.md
   - name: report
     path: commands/report.md
+  - name: sense-estate
+    path: commands/sense-estate.md
 
 repository:
   url: https://github.com/0xHoneyJar/construct-gecko.git
