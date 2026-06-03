@@ -1,0 +1,15 @@
+# GOOD fixture — a safe estates.yaml with argv-array commands.
+version: "1.0"
+estates:
+  echotest:
+    kind: doctor
+    # bash + a script path under $FIXTURE_DIR; --json is a script-side flag.
+    read_command: ["bash", "$FIXTURE_DIR/probe-ok.sh", "--json"]
+    mismatch_phrase: "declared ↔ governed"
+  absent:
+    kind: doctor
+    # script path does not exist → resolver must fail CLOSED to blind.
+    read_command: ["bash", "$FIXTURE_DIR/does-not-exist.sh"]
+    mismatch_phrase: "declared ↔ governed"
+tokens:
+  FIXTURE_DIR: "PLACEHOLDER_FIXTURE_DIR"

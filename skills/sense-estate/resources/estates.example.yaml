@@ -1,0 +1,54 @@
+# estates.example.yaml — EXAMPLE estate-wiring registry for the sense-estate doctor.
+#
+# This is the COMMITTED reference. The OPERATOR copies it to ~/.claude/estates.yaml,
+# edits the token defaults for their machine, then `chmod 600 ~/.claude/estates.yaml`.
+#
+#   cp skills/sense-estate/resources/estates.example.yaml ~/.claude/estates.yaml
+#   chmod 600 ~/.claude/estates.yaml
+#
+# The real file is OPERATOR-OWNED, machine-specific, and NOT committed to any repo.
+# .gitignore it (this skill ships a .gitignore guidance note in resources/README is NOT
+# needed; the repo .gitignore should carry `estates.yaml` and `.claude/estates.yaml`).
+#
+# RESOLUTION CONTRACT: a construct/skill carries only the estate SLUG (e.g. "recall") + the
+# $STRAYLIGHT_ESTATE / $BEADS_ESTATE indirection token. The resolver looks the slug up here and
+# reads the typed fields below. The committed artifact never bakes a path.
+#
+# SAFETY: every `*_command` is a YAML argv-ARRAY (never a string). An array maps 1:1 onto argv with
+# shell=False / "${cmd[@]}", so a row value can never become a second command. The resolver
+# (validate-estates.sh) enforces: argv[0] in the binary allowlist; no -e/-c/--eval/- interpreter
+# smuggling; no shell metacharacters; only $NAME token substitution; a timeout on every probe.
+
+version: "1.0"
+last_edited: "2026-06-02"
+
+estates:
+  recall:
+    kind: doctor+aligner
+    # The recall doctor's machine-readable receipt (read-only).
+    read_command: ["bash", "$STRAYLIGHT_ESTATE/recall-doctor.sh", "--json"]
+    # Optional unified read source (the consolidated coherence verdict).
+    coherence_command: ["bash", "$STRAYLIGHT_ESTATE/estate-coherence.sh", "--json"]
+    freshness_threshold_min: 1440
+    mismatch_phrase: "indexed ↔ surfaced (declared ↔ governed)"
+
+  beads:
+    kind: doctor+aligner
+    # The beads monitor's machine-readable output (exec form).
+    read_command: ["node", "$BEADS_ESTATE/monitor.mjs", "--json"]
+    # Cheap pre-written read: a SLURP (read, not exec) of the already-generated report.
+    report_path: "$BEADS_ESTATE/commons-report.json"
+    mismatch_phrase: "filed ↔ governed (carries a canonical Lab dim)"
+
+  github:
+    kind: doctor+aligner+teeth
+    # NOTE: teeth/enforce is OUT OF SCOPE for the sense-estate doctor (sense-only).
+    # This row exists only so the doctor can sense the github estate; the enforce_command
+    # is consumed by a SEPARATE act-construct, never by this skill.
+    mismatch_phrase: "declared ↔ enforced (taxonomy has teeth)"
+
+# Operator-set token defaults (the $… expansions). Only [A-Z_][A-Z0-9_]* names honored.
+# Precedence: tokens-map value (operator override) > process env > the value here.
+tokens:
+  STRAYLIGHT_ESTATE: "$HOME/.claude/scripts/straylight-estate"
+  BEADS_ESTATE: "$HOME/bonfire/beads-estate"
