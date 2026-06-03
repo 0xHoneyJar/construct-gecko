@@ -8,3 +8,10 @@ dist/
 .env
 .env.*
 .DS_Store
+
+# Operator-local estate-wiring registry for the sense-estate doctor.
+# NEVER commit the real file — it names machine-specific infra paths and is
+# operator-owned (mode 0600). The committed reference is
+# skills/sense-estate/resources/estates.example.yaml.
+estates.yaml
+.claude/estates.yaml

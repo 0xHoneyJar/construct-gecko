@@ -15,6 +15,7 @@ Ecosystem intelligence for the constructs network. Observes, never prescribes.
 | `/observe` | `observe` | Single-pass — check all constructs, produce JSONL observations |
 | `/diagnose` | `diagnose` | Deep investigation — one construct, full identity-reality analysis |
 | `/report` | `report` | Synthesis — aggregate observations into network health report |
+| `/sense-estate` | `sense-estate` | Single-pass — sense an arbitrary estate (registry/state pair), emit the `STATUS\|SIGNAL\|MISMATCH` coherence tile. Sense-only. |
 
 ## The Frozen Metric
 

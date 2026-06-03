@@ -1,0 +1,34 @@
+slug: sense-estate
+name: "Estate Coherence Sense"
+version: 0.1.0
+
+description: |
+  Use this skill to sense an ARBITRARY estate (a registry/state pair) and emit the minimal
+  coherence tile STATUS|SIGNAL|MISMATCH. The estate-general sibling of observe: resolves the
+  estate's read-command from operator-local estate-config (never a hardcoded path), shells the
+  estate's own doctor read-only, classifies ok/drift/blind. Sense-only — never mutates the estate.
+
+triggers:
+  - "/sense-estate"
+  - "sense the recall estate"
+  - "sense the beads estate"
+  - "estate coherence tile"
+  - "is this estate drifting"
+
+entry: SKILL.md
+
+capabilities:
+  model_tier: sonnet
+  danger_level: safe
+  effort_hint: medium
+  downgrade_allowed: true
+  execution_hint: sequential
+  requires:
+    tool_calling: true
+    native_runtime: false
+    thinking_traces: false
+    vision: false
+
+outputs:
+  - path: "grimoires/gecko/observations.jsonl"
+    description: "OPTIONAL append-only observation trail (the skill's own — never the observed estate)"
