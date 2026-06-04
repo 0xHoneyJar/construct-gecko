@@ -2,7 +2,7 @@ schema_version: 3
 name: Gecko
 slug: gecko
 version: 0.1.0
-description: "Health monitoring for the construct ecosystem. Runs automated checks, detects when constructs drift from their documentation, and tracks lifecycle status. Six skills: patrol (automated network loops), observe (single network check), diagnose (deep investigation), report (findings summary), sweep-bonfire (walks the operator's local working copies and emits to the wall — sibling altitude to patrol), sense-estate (senses an arbitrary estate's coherence and emits a STATUS|SIGNAL|MISMATCH tile — the portable, fail-closed immune-relay doctor)."
+description: "Health monitoring for the construct ecosystem. Runs automated checks, detects when constructs drift from their documentation, and tracks lifecycle status. Seven skills: patrol (automated network loops), observe (single network check), diagnose (deep investigation), report (findings summary), sweep-bonfire (walks the operator's local working copies and emits to the wall — sibling altitude to patrol), sense-estate (senses an arbitrary estate's coherence and emits a STATUS|SIGNAL|MISMATCH tile — the portable, fail-closed immune-relay doctor), sensing-path-friction (senses wrong-weight coordination paths — reach-in vs spawn-in-cell vs coord — and recurring cross-cell desire-paths that want to become rails, from the audit trail; DETECTOR-tier, surfaces never gates)."
 short_description: "Construct network health monitoring"
 author: 0xHoneyJar
 license: MIT
@@ -26,6 +26,8 @@ skills:
     path: skills/sweep-bonfire
   - slug: sense-estate
     path: skills/sense-estate
+  - slug: sensing-path-friction
+    path: skills/sensing-path-friction
 
 commands:
   - name: patrol
@@ -40,6 +42,8 @@ commands:
     path: commands/sweep-bonfire.md
   - name: sense-estate
     path: commands/sense-estate.md
+  - name: sensing-path-friction
+    path: commands/sensing-path-friction.md
 
 repository:
   url: https://github.com/0xHoneyJar/construct-gecko.git
@@ -77,6 +81,15 @@ events:
         construct_slug: string
         finding_count: number
         recommendations: number
+    - type: gecko.path_friction_observed
+      description: Emitted after a path-friction sense completes — wrong-weight coordination acts + recurring cross-cell desire-paths (DETECTOR-tier; surfaced, never gated)
+      data_schema:
+        status: string
+        cross_cell_mutates: number
+        reach_in: number
+        under_ceremony: number
+        desire_paths: number
+        top_desire_path: string
   consumes:
     - type: forge.k-hole.emergence_complete
       description: Picks up research emergence for ecosystem pattern matching
