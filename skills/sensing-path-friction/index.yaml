@@ -1,0 +1,60 @@
+slug: sensing-path-friction
+name: "Path-Friction Doctor"
+version: 0.1.0
+
+description: |
+  Use this skill to sense when agents use the WRONG-WEIGHT coordination path (reach-in vs
+  spawn-in-cell vs coord) and to detect recurring manual cross-cell patterns (desire-paths)
+  that want to become rails. Reads the mutation/audit trail (.run/audit.jsonl) read-only,
+  canonicalizes the bonfire↔Documents/GitHub symlink, classifies each cross-cell ACT by
+  weight-used vs weight-needed, and emits a friction report + the STATUS|SIGNAL|MISMATCH
+  coherence tile. DETECTOR-tier — surfaces, never fail-blocks. Sense-only.
+
+triggers:
+  - "/sensing-path-friction"
+  - "path-friction doctor"
+  - "are agents reaching in"
+  - "wrong-weight coordination path"
+  - "what cross-cell patterns want to become rails"
+  - "desire-path detection"
+
+entry: SKILL.md
+
+capabilities:
+  model_tier: sonnet
+  danger_level: safe
+  effort_hint: medium
+  downgrade_allowed: true
+  execution_hint: sequential
+  requires:
+    tool_calling: true
+    native_runtime: false
+    thinking_traces: false
+    vision: false
+
+outputs:
+  - type: tile
+    format: "STATUS|SIGNAL|MISMATCH (single line; --tile mode; byte-compatible with estate-coherence.sh)"
+  - type: friction_report
+    format: "full report (default) | json (--json) — classified cross-cell acts + recurring desire-paths"
+  - type: clew
+    format: ">>clew@gecko/sensing-path-friction: <proposed rail> (GECKO capture format, one per desire-path)"
+  - path: "grimoires/gecko/observations.jsonl"
+    description: "OPTIONAL append-only observation trail (the skill's own — never an observed cell)"
+
+composes_with:
+  - sense-estate         # sibling — the estate-coherence doctor (registry↔state); same tile contract
+  - report               # GECKO sibling — synthesis surface the friction row folds into
+  - clew                 # the drain that turns a chosen desire-path into a teaching PR (operator-paced)
+  - compose              # construct-rooms-substrate — where a paved rail eventually lives
+
+trust_boundary:
+  reads:
+    - "<repo>/.run/audit.jsonl (mutation-logger + write-mutation-logger)"
+    - "~/Documents/GitHub/loa-freeside/.run/audit.jsonl + ~/bonfire/.run/audit.jsonl (default hubs)"
+  writes:
+    - "grimoires/gecko/observations.jsonl (the skill's OWN trail, optional)"
+  never:
+    - git push, git commit, gh pr, br update — zero act/dispatch verbs against any cell
+    - mutate any observed cell's source / state
+    - fail-block (path-weight is a judgment; the doctor surfaces, never gates)

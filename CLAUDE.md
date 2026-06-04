@@ -16,6 +16,7 @@ Ecosystem intelligence for the constructs network. Observes, never prescribes.
 | `/diagnose` | `diagnose` | Deep investigation — one construct, full identity-reality analysis |
 | `/report` | `report` | Synthesis — aggregate observations into network health report |
 | `/sense-estate` | `sense-estate` | Single-pass — sense an arbitrary estate (registry/state pair), emit the `STATUS\|SIGNAL\|MISMATCH` coherence tile. Sense-only. |
+| `/sensing-path-friction` | `sensing-path-friction` | Single-pass — sense wrong-weight coordination paths (reach-in vs spawn-in-cell vs coord) + recurring cross-cell desire-paths that want to become rails, from the audit trail. DETECTOR-tier: surfaces, never gates. Sense-only. |
 
 ## The Frozen Metric
 
