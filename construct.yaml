@@ -2,7 +2,7 @@ schema_version: 3
 name: Gecko
 slug: gecko
 version: 0.1.0
-description: "Health monitoring for the construct ecosystem. Runs automated checks, detects when constructs drift from their documentation, and tracks lifecycle status. Seven skills: patrol (automated network loops), observe (single network check), diagnose (deep investigation), report (findings summary), sweep-bonfire (walks the operator's local working copies and emits to the wall — sibling altitude to patrol), sense-estate (senses an arbitrary estate's coherence and emits a STATUS|SIGNAL|MISMATCH tile — the portable, fail-closed immune-relay doctor), sensing-path-friction (senses wrong-weight coordination paths — reach-in vs spawn-in-cell vs coord — and recurring cross-cell desire-paths that want to become rails, from the audit trail; DETECTOR-tier, surfaces never gates)."
+description: "Health monitoring for the construct ecosystem. Runs automated checks, detects when constructs drift from their documentation, and tracks lifecycle status. Eight skills: patrol (automated network loops), observe (single network check), diagnose (deep investigation), report (findings summary), sweep-bonfire (walks the operator's local working copies and emits to the wall — sibling altitude to patrol), sense-estate (senses an arbitrary estate's coherence and emits a STATUS|SIGNAL|MISMATCH tile — the portable, fail-closed immune-relay doctor), sensing-path-friction (senses wrong-weight coordination paths — reach-in vs spawn-in-cell vs coord — and recurring cross-cell desire-paths that want to become rails, from the audit trail; DETECTOR-tier, surfaces never gates), sensing-construct-console (senses the live construct estate — declared ↔ governed ↔ earned — and emits the tile + Exhibit A + a three-row composition console; the composition+earned-authority sibling of probe_constructs's install-state)."
 short_description: "Construct network health monitoring"
 author: 0xHoneyJar
 license: MIT
@@ -28,6 +28,8 @@ skills:
     path: skills/sense-estate
   - slug: sensing-path-friction
     path: skills/sensing-path-friction
+  - slug: sensing-construct-console
+    path: skills/sensing-construct-console
 
 commands:
   - name: patrol
@@ -44,6 +46,8 @@ commands:
     path: commands/sense-estate.md
   - name: sensing-path-friction
     path: commands/sensing-path-friction.md
+  - name: sensing-construct-console
+    path: commands/sensing-construct-console.md
 
 repository:
   url: https://github.com/0xHoneyJar/construct-gecko.git

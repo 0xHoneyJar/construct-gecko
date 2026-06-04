@@ -1,0 +1,37 @@
+slug: sensing-construct-console
+name: "Construct Estate Console Sensor"
+version: 0.1.0
+
+description: |
+  Use this skill to sense the live CONSTRUCT estate and emit the minimal coherence tile
+  STATUS|SIGNAL|MISMATCH plus Exhibit A + a three-row composition console. Reads three sides —
+  declared (compose_with + streams overlap + the static index), governed (the live packs dir,
+  loud on absent/unreadable manifest), earned (an append-only authority ledger). Replaces
+  hardcoded construct-maps with a fast read-only sensor. Sense-only — grants no authority,
+  adds no gate, mutates no pack. The complementary sibling of probe_constructs (install-state).
+
+triggers:
+  - "/sensing-construct-console"
+  - "sense the construct estate"
+  - "construct console"
+  - "are the construct maps drifting"
+  - "which constructs compose"
+  - "earned authority"
+
+entry: SKILL.md
+
+capabilities:
+  model_tier: sonnet
+  danger_level: safe
+  effort_hint: medium
+  downgrade_allowed: true
+  execution_hint: sequential
+  requires:
+    tool_calling: true
+    native_runtime: false
+    thinking_traces: false
+    vision: false
+
+outputs:
+  - path: "grimoires/gecko/observations.jsonl"
+    description: "the EARNED authority ledger this skill SENSES (append-only, stream_type:Signal, outcome:closed) — appended by a separate closed-work attribution act, never by this read"

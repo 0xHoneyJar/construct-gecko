@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://constructs.network/gecko/observations.schema.json",
+  "title": "GECKO earned-authority ledger row",
+  "description": "One append-only line in grimoires/gecko/observations.jsonl. One row per CLOSED output. authority(construct, domain) = count of closed rows for that pair; co-occurrence of construct + co_constructs[] is an OBSERVED composition edge. This file is SENSED by sensing-construct-console; rows are appended by a SEPARATE closed-work attribution act (never by the read). The ledger does not exist until first append; an absent ledger is treated as empty (observed = 0).",
+  "type": "object",
+  "required": ["stream_type", "construct", "outcome"],
+  "additionalProperties": true,
+  "properties": {
+    "timestamp": {
+      "type": "string",
+      "description": "ISO-8601 UTC timestamp of the closed output (informational; not load-bearing for counts)"
+    },
+    "stream_type": {
+      "const": "Signal",
+      "description": "GECKO writes the Signal stream; rows that are not Signal are ignored by the sensor"
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "semver of this row schema (pattern, not enum, so a future bump does not self-DoS the reader)"
+    },
+    "construct": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._-]+$",
+      "description": "the construct that produced the closed output (the authority-earner)"
+    },
+    "domain": {
+      "type": "string",
+      "description": "the domain the work was in — authority is scoped (construct, domain). A construct may earn craft authority and have zero observability authority."
+    },
+    "co_constructs": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[A-Za-z0-9._-]+$" },
+      "description": "the OTHER constructs that co-occurred in this closed output. Each (construct, co_construct) is an OBSERVED composition edge. Empty if the work was solo."
+    },
+    "ref": {
+      "type": "string",
+      "description": "a verifiable reference to the closed work (PR URL, commit SHA, sprint id) — the receipt. Ungrounded rows are background-only."
+    },
+    "outcome": {
+      "type": "string",
+      "enum": ["closed", "open", "abandoned"],
+      "description": "ONLY outcome=='closed' counts toward authority/observed. open/abandoned rows are ignored by the sensor (work not done = authority not earned)."
+    }
+  },
+  "examples": [
+    {
+      "timestamp": "2026-06-04T10:00:00Z",
+      "stream_type": "Signal",
+      "schema_version": "1.0.0",
+      "construct": "artisan",
+      "domain": "craft",
+      "co_constructs": ["observer"],
+      "ref": "https://github.com/0xHoneyJar/loa-freeside/pull/101",
+      "outcome": "closed"
+    }
+  ]
+}
