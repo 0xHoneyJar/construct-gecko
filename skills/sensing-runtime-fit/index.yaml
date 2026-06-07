@@ -1,0 +1,42 @@
+slug: sensing-runtime-fit
+name: "Runtime-Fit Sensor"
+version: 0.1.0
+
+description: |
+  Use this skill to sense whether each construct's declared runtime contract coheres with the
+  runtime that runs it — and emit the minimal coherence tile STATUS|SIGNAL|MISMATCH plus a
+  runtime-fit ledger. Reads construct.yaml capabilities (model_tier, danger_level, downgrade,
+  effort, execution, requires) + skill frontmatter (allowed-tools, agent, capabilities) read-only.
+  Detects capability-reality drift: CONFLICTS that break silently (the #553 write/agent-conflict,
+  write/web denials contradicted by tools) and SMELLS that surface (unknown tiers, opus pinned for
+  light work, no-capabilities, vocabulary drift), and surfaces workflow.gates owners. Reads against
+  the taxonomy distilled in identity/environment.md. Sense-only — grants no authority, adds no gate,
+  mutates no pack. The runtime-fit sibling of sensing-construct-console (composition) and diagnose
+  (identity).
+
+triggers:
+  - "/sensing-runtime-fit"
+  - "sense runtime fit"
+  - "runtime fit"
+  - "capability reality drift"
+  - "which constructs ask for a model tier the runtime doesn't have"
+  - "does this skill write through a read-only agent"
+  - "which constructs own workflow gates"
+
+entry: SKILL.md
+
+capabilities:
+  model_tier: sonnet
+  danger_level: safe
+  effort_hint: medium
+  downgrade_allowed: true
+  execution_hint: sequential
+  requires:
+    tool_calling: true
+    native_runtime: false
+    thinking_traces: false
+    vision: false
+
+outputs:
+  - path: "grimoires/gecko/observations.jsonl"
+    description: "OPTIONAL append-only observation trail (the skill's OWN — never an observed pack), stream_type:Signal, doctor:runtime-fit — appended by a separate act, never by the read"
