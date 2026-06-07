@@ -42,6 +42,17 @@ This skill is the eye; that file is what the eye knows.
 | **teeth-tier** | invariant > gate > DETECTOR. This skill reports an invariant-class (CONFLICT, hard) AND a detector-class (SMELL, soft) — clearly separated. It still never fail-blocks; it surfaces. |
 | **sense-only** | names the mismatch; grants no authority, adds no gate, mutates no pack. The fix is a separate, operator-paced act. |
 | **the map is fallible** | the runtime tiers/agent-allowlist live OUTSIDE the repo. GECKO carries a distilled copy and marks the seam loudly — an unknown value may be NEW, not stale. |
+| **roleplay-vulnerability** | the RAIL edition of capability-reality drift. a deterministic loop EXISTS but nothing REQUIRES its artifact — so an LLM asked to "run" it SIMULATES the output instead (native next-token plausibility, not malice). a rail is roleplay-vulnerable when faking its output is cheaper than running it. cure flips COST (un-fakeable trace + a check that requires it + downstream that consumes the trace, not the agent's word) — adds no compute. "we already had the code" ≠ load-bearing. |
+
+### Rails vs seams (where the eye looks, and where it must NOT)
+
+avoid-roleplay is a RAIL property, never a seam one. a rail is deterministic transport
+between judgments — INVOKED, never simulated; sense it for an un-fakeable run-trace + a
+check that requires it (proof-of-run: no trace = not_a_run) + downstream consuming the
+trace. a SEAM (a gate, an operator pairing, a construct's own reasoning) is where roleplay
+IS the work. the eye flags a rail that can be faked cheaply; it leaves seams alone. a
+proof-of-run gate verifies the TRANSPORT happened, never the judgment's quality. misread a
+seam as a rail → you gate creativity; misread a rail as a seam → you trust a simulation.
 
 ## Invocation
 
