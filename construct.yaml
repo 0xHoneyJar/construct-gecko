@@ -2,7 +2,7 @@ schema_version: 3
 name: Gecko
 slug: gecko
 version: 0.1.0
-description: "Health monitoring for the construct ecosystem. Runs automated checks, detects when constructs drift from their documentation, and tracks lifecycle status. Eight skills: patrol (automated network loops), observe (single network check), diagnose (deep investigation), report (findings summary), sweep-bonfire (walks the operator's local working copies and emits to the wall — sibling altitude to patrol), sense-estate (senses an arbitrary estate's coherence and emits a STATUS|SIGNAL|MISMATCH tile — the portable, fail-closed immune-relay doctor), sensing-path-friction (senses wrong-weight coordination paths — reach-in vs spawn-in-cell vs coord — and recurring cross-cell desire-paths that want to become rails, from the audit trail; DETECTOR-tier, surfaces never gates), sensing-construct-console (senses the live construct estate — declared ↔ governed ↔ earned — and emits the tile + Exhibit A + a three-row composition console; the composition+earned-authority sibling of probe_constructs's install-state)."
+description: "Health monitoring for the construct ecosystem. Runs automated checks, detects when constructs drift from their documentation, and tracks lifecycle status. Nine skills: patrol (automated network loops), observe (single network check), diagnose (deep investigation), report (findings summary), sweep-bonfire (walks the operator's local working copies and emits to the wall — sibling altitude to patrol), sense-estate (senses an arbitrary estate's coherence and emits a STATUS|SIGNAL|MISMATCH tile — the portable, fail-closed immune-relay doctor), sensing-path-friction (senses wrong-weight coordination paths — reach-in vs spawn-in-cell vs coord — and recurring cross-cell desire-paths that want to become rails, from the audit trail; DETECTOR-tier, surfaces never gates), sensing-construct-console (senses the live construct estate — declared ↔ governed ↔ earned — and emits the tile + Exhibit A + a three-row composition console; the composition+earned-authority sibling of probe_constructs's install-state), sensing-runtime-fit (senses whether each construct's declared runtime contract — model_tier, agent, allowed-tools, downgrade, workflow.gates — coheres with the runtime that runs it; detects capability-reality drift: the #553 write/agent-conflict that silently drops output, model tiers the runtime doesn't offer, write/web denials contradicted by tools, opus pinned for light work; surfaces gate-owners; reads against the taxonomy in identity/environment.md; sense-only, never gates)."
 short_description: "Construct network health monitoring"
 author: 0xHoneyJar
 license: MIT
@@ -30,6 +30,8 @@ skills:
     path: skills/sensing-path-friction
   - slug: sensing-construct-console
     path: skills/sensing-construct-console
+  - slug: sensing-runtime-fit
+    path: skills/sensing-runtime-fit
 
 commands:
   - name: patrol
@@ -48,6 +50,8 @@ commands:
     path: commands/sensing-path-friction.md
   - name: sensing-construct-console
     path: commands/sensing-construct-console.md
+  - name: sensing-runtime-fit
+    path: commands/sensing-runtime-fit.md
 
 repository:
   url: https://github.com/0xHoneyJar/construct-gecko.git
@@ -94,6 +98,14 @@ events:
         under_ceremony: number
         desire_paths: number
         top_desire_path: string
+    - type: gecko.runtime_fit_observed
+      description: Emitted after a runtime-fit sense completes — capability-reality drift across the construct estate (CONFLICTS hard / drive drift, SMELLS soft / surfaced; DETECTOR-tier, never gated)
+      data_schema:
+        status: string
+        packs_checked: number
+        conflicts: number
+        smells: number
+        gate_owners: number
   consumes:
     - type: forge.k-hole.emergence_complete
       description: Picks up research emergence for ecosystem pattern matching
@@ -107,6 +119,7 @@ paths:
     - "construct.yaml"
     - "identity/persona.yaml"
     - "skills/*/SKILL.md"
+    - "skills/*/index.yaml"
   writes:
     - "grimoires/gecko/"
 
