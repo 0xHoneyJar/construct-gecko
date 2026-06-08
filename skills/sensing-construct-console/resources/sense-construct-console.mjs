@@ -73,11 +73,26 @@ function blind(reason) {
 // Anything unreadable is reported UNKNOWN — never guessed.
 function readManifestFields(text) {
   const lines = text.split(/\r?\n/);
-  const out = { compose_with: null, reads: null, writes: null };
+  const out = { compose_with: null, reads: null, writes: null, genome_depth: 0, genome_hash: null };
 
   // top-level key = column-0, `key:` form.
   const topIdx = (key) =>
     lines.findIndex((l) => new RegExp(`^${key}\\s*:`).test(l));
+
+  // ---- genome chain depth (EARNED authority via clew-merge — bd-uze) ----------
+  // genome_depth/genome_hash are additive top-level PROVENANCE (NOT the behavioral
+  // interface). Depth = conviction = earned authority; 0 = no genome yet. SHADOW:
+  // surfaced here, not yet a routing/gate input.
+  const gdAt = topIdx("genome_depth");
+  if (gdAt !== -1) {
+    const m = lines[gdAt].match(/^genome_depth\s*:\s*(\d+)/);
+    if (m) out.genome_depth = parseInt(m[1], 10);
+  }
+  const ghAt = topIdx("genome_hash");
+  if (ghAt !== -1) {
+    const m = lines[ghAt].match(/^genome_hash\s*:\s*(sha256:[0-9a-f]{64})/);
+    if (m) out.genome_hash = m[1];
+  }
 
   // ---- compose_with (top-level only — author's hand-written intent) ----------
   const cwAt = topIdx("compose_with");
@@ -220,6 +235,8 @@ function sense(root) {
       compose_with: f.compose_with || [],
       reads: f.reads || [],
       writes: f.writes || [],
+      genome_depth: f.genome_depth || 0,
+      genome_hash: f.genome_hash || null,
     });
   }
 
@@ -291,6 +308,17 @@ function sense(root) {
     .filter((p) => !(authority[p.slug] > 0))
     .map((p) => p.slug);
 
+  // ---- GENOME depth: earned authority via clew-merge (bd-uze, SHADOW) ---------
+  // A second, independent earned-authority signal (complements the closed-row
+  // ledger): genome_depth = count of operator-merged, run-verified clews a
+  // construct has absorbed. Surfaced; NOT yet a routing/gate input (shadow-first).
+  const withGenome = live
+    .filter((p) => p.manifestReadable && p.genome_depth > 0)
+    .map((p) => ({ slug: p.slug, depth: p.genome_depth, head: p.genome_hash }))
+    .sort((a, b) => b.depth - a.depth);
+  const genomeTotalDepth = withGenome.reduce((s, p) => s + p.depth, 0);
+  const genomeMaxDepth = withGenome.reduce((m, p) => Math.max(m, p.depth), 0);
+
   // ---- STATUS classification (the estate's own thresholds) -------------------
   // blind: territory unreadable (handled above by early-return)
   // drift: any phantom OR any unmapped-live OR any unreadable manifest OR
@@ -323,6 +351,7 @@ function sense(root) {
     earned, observedPairs,
     deadIntentions, undeclaredDeps,
     authority, authorityUnearned,
+    withGenome, genomeTotalDepth, genomeMaxDepth,
   };
 }
 
@@ -467,6 +496,19 @@ function renderConsole(s) {
       L.push(`    authority_unearned (0 closed): ${s.authorityUnearned.length} constructs`);
   }
   L.push("");
+
+  // ---- GENOME depth (the second earned-authority signal — bd-uze, shadow) ----
+  L.push("  GENOME — earned authority via clew-merge (bd-uze)  [SHADOW: surfaced, not yet routed]");
+  if (s.withGenome.length === 0) {
+    L.push(`    0/${s.live.length} live constructs carry a genome (depth 0 everywhere)`);
+    L.push("    → the clew loop hasn't compounded yet; depth grows only via run-verified --mark-distilled");
+  } else {
+    L.push(`    ${s.withGenome.length}/${s.live.length} carry a genome · total depth ${s.genomeTotalDepth} · deepest ${s.genomeMaxDepth}`);
+    for (const g of s.withGenome.slice(0, 8))
+      L.push(`    🧬 ${g.slug}: genome-depth ${g.depth}  (${g.head ? g.head.slice(0, 19) + "…" : "—"})`);
+    L.push("    deeper chain = more earned conviction = the lower-risk choice (routing on this is the deferred step)");
+  }
+  L.push("");
   L.push("  sense-only — grants no authority, adds no gate, mutates no pack. the act-construct grants.");
   return L.join("\n");
 }
@@ -505,6 +547,12 @@ function buildJson(s) {
       rows: s.earned.rows,
       edges: s.observedPairs.length,
       authority_unearned: s.authorityUnearned.length,
+      genome: {
+        with_genome: s.withGenome.length,
+        total_depth: s.genomeTotalDepth,
+        max_depth: s.genomeMaxDepth,
+        routed: false,
+      },
     },
     gap: {
       dead_intentions: s.deadIntentions.length,
