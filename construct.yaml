@@ -32,6 +32,8 @@ skills:
     path: skills/sensing-construct-console
   - slug: sensing-runtime-fit
     path: skills/sensing-runtime-fit
+  - slug: sensing-deployment-seam
+    path: skills/sensing-deployment-seam
 
 commands:
   - name: patrol
