@@ -29,7 +29,7 @@ operator/agent decides. There is no action slot.
 |---|---|
 | **mounted-agent posture** | act on your OWN cell directly; act on ANOTHER cell only by spawning an agent INSIDE it. Reaching in from outside = a posture slip. |
 | **the path gradient** | right-size the path to the task: L0 write-own · L1 spawn-in-cell · L2 `/coord` (coordinator + branch + review-gated PR) · L3 `/compose`. Pick the LIGHTEST path that fits (cost-of-failure × reversibility × blast-radius). |
-| **the consumption gradient** | the regenerative path must be the path of LEAST resistance. If the correct path is steeper than reaching-in, agents reach in. |
+| **the consumption gradient** | the regenerative path must be the path of LEAST resistance. If the correct path is steeper than reaching-in, agents reach in. OBSERVED LIVE (2026-06-06, clew lrn-20260606-gecko-a7fce3): an agent bypassed `/compose` for 4 consecutive builds despite compose-doctor reporting READY — raw Workflow was lighter than compiling a composition. a READY doctor does not mean the governed path is the least-resistance path; sense the WEIGHT DELTA (governed-path steps vs raw-path steps), not just availability. |
 | **done-twice-becomes-a-path** | a recurring manual cross-cell act → auto-PROPOSE a lightweight composable rail (floor-raise, not a bespoke per-task tile). |
 | **teeth-tier** | invariant > gate > DETECTOR. This is a DETECTOR. surface-not-decide. |
 

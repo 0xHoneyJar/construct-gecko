@@ -46,6 +46,22 @@ For each cycle:
 2. Read the emitted observation from `observations.jsonl`
 3. Compare `health_score` against `baseline_score`
 
+### Step 2.5: Reward-Loop Health (the RLAIHF dimension)
+
+Patrol senses the construct LEARNING loop, not just declared-vs-runtime fit. Read the clew
+ledgers (`~/.loa/constructs/packs/*/LEARNINGS.jsonl`; `node ~/bonfire/clew-loop.mjs` where
+present) and compare CAPTURE RATE against operator activity:
+
+| Condition | Reading |
+|---|---|
+| heavy operator activity + pending clews accumulating | loop healthy — the backlog is the drain's (`/clew <construct>`) |
+| heavy operator activity + near-zero capture | loop UNDER-FIRING — root cause is UPSTREAM of capture: main-loop work isn't routed THROUGH constructs, so corrections never become construct-targeted clews. Surface as drift; the fix is routing (`/compose`, construct agentTypes), not more capture tooling. |
+| capture without distillation for >2 weeks | teachings rotting in the ledger — surface the ripe constructs |
+
+Lesson (clew lrn-20260607-gecko-2f35ed): only ~4 clews existed ecosystem-wide despite heavy
+operator activity. An under-fed reward loop looks like silence — and silence reads as health
+unless patrol measures the loop ITSELF as a drift dimension.
+
 ### Step 3: Ratchet Decision
 
 | Condition | Action |
