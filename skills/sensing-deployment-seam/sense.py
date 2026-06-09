@@ -177,9 +177,53 @@ def sense_install_lag(roots):
     return out
 
 
+def load_substrate_constructs():
+    """The declared substrate constructs from the SoT manifest (the 'different kind' of
+    construct — runtime + deck, not skill-packs)."""
+    if not MANIFEST.is_file():
+        return []
+    try:
+        import yaml
+
+        data = yaml.safe_load(MANIFEST.read_text()) or {}
+        return data.get("substrate_constructs") or []
+    except Exception:  # noqa: BLE001
+        return []
+
+
+def sense_substrate_home(roots, substrates):
+    """SEAM-SUBSTRATE-HOME: each declared substrate construct must be INSTALLED at its SoT
+    home (substrates/<name>, a real dir). Symlinked to a dev source (the runtime-symlink->
+    branch seam) or read from ~/bonfire is the scatter — a CONFLICT."""
+    out = []
+    sub_root = roots.get("substrates")
+    if not sub_root or not substrates:
+        return out
+    for s in substrates:
+        name = s.get("name") if isinstance(s, dict) else s
+        if not name:
+            continue
+        install = sub_root / name
+        if install.is_dir() and not install.is_symlink():
+            continue  # at its SoT home — good
+        where = "absent"
+        if install.is_symlink():
+            where = f"SYMLINK -> {os.readlink(install)}"
+        else:
+            for legacy in (HOME / ".loa" / "runtime" / name, HOME / "bonfire" / name, HOME / "Documents" / "GitHub" / name):
+                if legacy.exists():
+                    tgt = f" -> {os.readlink(legacy)}" if legacy.is_symlink() else ""
+                    where = f"at {legacy}{tgt}"
+                    break
+        out.append(finding("CONFLICT", "substrate-home", name, str(install), where,
+                           f"substrate construct not at its SoT home; {where} — re-home to substrates/<name>"))
+    return out
+
+
 def main():
     roots, source = load_roots()
-    findings = sense_root_coherence(roots) + sense_install_lag(roots)
+    findings = (sense_root_coherence(roots) + sense_install_lag(roots)
+                + sense_substrate_home(roots, load_substrate_constructs()))
     as_json = "--json" in sys.argv
     if as_json:
         print(json.dumps({"sot_source": source, "packs_root": str(roots["packs"]), "findings": findings}, indent=2))
