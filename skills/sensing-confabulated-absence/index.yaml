@@ -1,0 +1,44 @@
+slug: sensing-confabulated-absence
+name: "Confabulated-Absence Sensor"
+version: 0.1.0
+
+description: |
+  Use this skill to sense whether an agent's CLAIM that a capability is ABSENT is contradicted by
+  the config SoT that DECLARES it PRESENT — and emit the minimal coherence tile STATUS|SIGNAL|MISMATCH
+  plus a confabulated-absence ledger. Reads agent free text (not pack frontmatter) and a live
+  capability index built from .claude/defaults/model-config.yaml (providers, aliases, tier_groups,
+  *-headless terminals), read-only. Fires confabulated-absence (hard, drives drift) on a grounded
+  contradiction — an agent asserting `cheval is API-only` or `validate_model rejects native` when the
+  SoT ships ~52 headless refs + claude/codex/gemini/grok-headless terminals + a native alias. A
+  false-positive firewall keeps absence claims about tokens NOT in the index strictly soft
+  (unverifiable, never drift). Reads against the taxonomy distilled in identity/environment.md.
+  Sense-only — grants no authority, adds no gate, mutates no state. The claim-side sibling of
+  sensing-runtime-fit (frontmatter / runtime-fit).
+
+triggers:
+  - "/sensing-confabulated-absence"
+  - "sense confabulated absence"
+  - "confabulated absence"
+  - "did the agent invent a missing capability"
+  - "is this absence claim contradicted by the SoT"
+  - "cheval is API-only"
+  - "rejects native"
+  - "the agent says X doesn't exist but the config declares it"
+
+entry: SKILL.md
+
+capabilities:
+  model_tier: sonnet
+  danger_level: safe
+  effort_hint: medium
+  downgrade_allowed: true
+  execution_hint: sequential
+  requires:
+    tool_calling: true
+    native_runtime: false
+    thinking_traces: false
+    vision: false
+
+outputs:
+  - path: "grimoires/gecko/observations.jsonl"
+    description: "OPTIONAL append-only observation trail (the skill's OWN — never an observed agent/state), stream_type:Signal, doctor:confabulated-absence — appended by a separate act, never by the read"

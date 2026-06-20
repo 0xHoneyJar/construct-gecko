@@ -34,6 +34,8 @@ skills:
     path: skills/sensing-runtime-fit
   - slug: sensing-deployment-seam
     path: skills/sensing-deployment-seam
+  - slug: sensing-confabulated-absence
+    path: skills/sensing-confabulated-absence
 
 commands:
   - name: patrol
@@ -56,6 +58,8 @@ commands:
     path: commands/sensing-runtime-fit.md
   - name: sensing-deployment-seam
     path: commands/sensing-deployment-seam.md
+  - name: sensing-confabulated-absence
+    path: commands/sensing-confabulated-absence.md
 
 repository:
   url: https://github.com/0xHoneyJar/construct-gecko.git
