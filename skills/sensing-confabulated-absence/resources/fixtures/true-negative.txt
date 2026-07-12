@@ -1,0 +1,6 @@
+A genuine absence claim about a capability the SoT does NOT declare.
+This must stay `ok` — the firewall: an unknown token is unverifiable, never drift.
+
+quantum-teleport is not supported by any provider in the registry.
+there is no flux-capacitor backend, so that route can't be built.
+there is no api gateway configured here, so external calls won't work.

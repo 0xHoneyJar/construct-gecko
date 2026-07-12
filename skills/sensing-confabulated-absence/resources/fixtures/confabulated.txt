@@ -1,0 +1,5 @@
+The two REAL contradicted agent claims (loa-finn transcripts, verbatim).
+These fixtures REPRESENT the off-repo transcripts with the exact claim strings.
+
+cheval is API-only, so there's no way to route a CLI model through it.
+validate_model rejects native, so the native runtime is not a real terminal.
