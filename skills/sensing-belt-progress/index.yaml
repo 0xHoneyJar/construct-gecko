@@ -1,0 +1,27 @@
+slug: sensing-belt-progress
+name: "Belt Progress Sensor"
+version: 0.1.0
+
+description: |
+  GECKO lens over sonar-api scripts/belt-progress.mjs — Belt sync tip/stall/ETA.
+  Sense-only. Never sets ENVIO_RESTART.
+
+triggers:
+  - "/sensing-belt-progress"
+  - "belt progress"
+  - "envio stall"
+  - "chain sync eta"
+
+entry: SKILL.md
+
+capabilities:
+  model_tier: sonnet
+  danger_level: safe
+  effort_hint: small
+  downgrade_allowed: true
+  execution_hint: sequential
+  requires:
+    tool_calling: true
+    native_runtime: false
+    thinking_traces: false
+    vision: false
